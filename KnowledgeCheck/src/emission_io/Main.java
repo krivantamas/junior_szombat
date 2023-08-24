@@ -6,7 +6,14 @@ import java.io.FileNotFoundException;
 public class Main {
     public static void main(String[] args) throws FileNotFoundException {
 
-        EmissionReader.readEmissionFromCSV(new File("src\\emission_io\\emission.csv"));
+        EmissionInfoRepository repository = new EmissionInfoRepository();
+
+        System.out.println(repository.getMinCo2Emission());
+        System.out.println(repository.getMaxCo2Emission());
+        System.out.println(repository.getUniqueEngineSizeCount());
+        System.out.println(repository.getUniqueEngineSizeCountV2());
+        System.out.println(repository.getAllManufacturer());
+        System.out.println(repository.getAllEmissionInfoByEngineSize(2.0));
 
     }
 }
