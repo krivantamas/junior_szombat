@@ -4,7 +4,6 @@ import java.util.Objects;
 
 public class CarEmissionInfo {
 
-
     private final String manufacturer;
     private final String model;
     private final double engineSize;
