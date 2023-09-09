@@ -2,34 +2,48 @@ package quiz;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
 public class QuizMainController {
 	
 	private final QuizMainView view;
 	private List<Question> questions;
+	private final File leaderBoardPath;
 	
 	//
 	private List<QuestionListListener> questionListListeners = new ArrayList<>();
 
 	
-	public QuizMainController(QuizMainView quizMainView) {
+	public QuizMainController(QuizMainView quizMainView, File leaderBoardPath) {
 		this.view = quizMainView;
+		this.leaderBoardPath = leaderBoardPath;
 		initView(quizMainView);
 	}
 
 	private void initView(QuizMainView quizMainView) {
 		quizMainView.setController(this);
 		quizMainView.setVisible(true);
-		quizMainView.refreshTable(new ArrayList<User>());
+		loadLeaderbordInfo();
 	}
 	
 	private void loadLeaderbordInfo() {
-		//TODO Olvassunk be egy users.csv-t és frissítsük a táblázatot aszerint!
+		
+		try {
+			List<User> users = LeaderBoardFileHandler.loadLeaderBoardCsv(leaderBoardPath);
+			view.refreshTable(users);
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(view, e.getMessage(), "Errors happened during the file processing!",
+					JOptionPane.ERROR_MESSAGE);
+		}
+		
 	}
 	
 	public void setQuestions(List<Question> questions) {
@@ -64,9 +78,17 @@ public class QuizMainController {
 		
 		QuizDialog dialog = new QuizDialog(questions);
 		dialog.setVisible(true);
-		System.out.println(dialog.getScore());
-		dialog.dispose();
 		
+		int userScore = dialog.getScore();
+		String username = view.getUsername();
+		try {
+			LeaderBoardFileHandler.appendLeaderBoardCsv(leaderBoardPath, new User(username,userScore));
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(view, e.getMessage(), "Something went wrong, sorry :/",
+					JOptionPane.ERROR_MESSAGE);
+		}
+		dialog.dispose();
+		loadLeaderbordInfo();
 	}
 	
 	

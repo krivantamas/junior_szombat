@@ -2,6 +2,7 @@ package quiz;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,16 +15,20 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 public class Main {
 
-	public static void main(String[] args) throws FileNotFoundException {
+	public static void main(String[] args) throws IOException {
 
 		setLookAndFeel();
 
-		//loadQuestions();
+		// loadQuestions();
 
-		 QuizMainController controller = new QuizMainController(new QuizMainView());
+		QuizMainController controller = new QuizMainController(new QuizMainView(), new File("src/leaderboard_2.csv"));
+
+		// System.out.println(LeaderBoardFileHandler.loadLeaderBoardCsv(new
+		// File("src/leaderboard.csv")));
+		
+		//LeaderBoardFileHandler.appendLeaderBoardCsv(new File("src/leaderboard_2.csv"), new User("Zsolt",2));
 
 	}
-
 
 	public static void setLookAndFeel() {
 		try {

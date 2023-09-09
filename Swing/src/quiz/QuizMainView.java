@@ -29,7 +29,7 @@ public class QuizMainView extends JFrame {
 
 	private JPanel contentPane;
 	private JTable leaderBoard;
-	private JTextField textField;
+	private JTextField usernameField;
 	private JLabel questionCountLabel;
 	private JButton startButton;
 	private QuizMainController controller = null;
@@ -153,13 +153,13 @@ public class QuizMainView extends JFrame {
 		gbl_panel_1.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
 		panel_1.setLayout(gbl_panel_1);
 
-		textField = new JTextField();
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.gridx = 0;
-		gbc_textField.gridy = 0;
-		panel_1.add(textField, gbc_textField);
-		textField.setColumns(10);
+		usernameField = new JTextField();
+		GridBagConstraints gbc_usernameField = new GridBagConstraints();
+		gbc_usernameField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_usernameField.gridx = 0;
+		gbc_usernameField.gridy = 0;
+		panel_1.add(usernameField, gbc_usernameField);
+		usernameField.setColumns(10);
 
 		startButton = new JButton("Start Quiz");
 		startButton.setEnabled(false);
@@ -202,11 +202,22 @@ public class QuizMainView extends JFrame {
 	}
 
 	private void startQuizButtonPressed() {
-		controller.startQuiz();
+		if(!usernameField.getText().isBlank()) {
+			controller.startQuiz();
+		}else {
+			JOptionPane.showMessageDialog(this, "Please select a username!", "Username not present",
+					JOptionPane.ERROR_MESSAGE);
+		}
+		
 	}
 
 	public void refreshTable(List<User> userList) {
 		leaderBoard.setModel(new LeaderBoardModel(userList));
+	}
+	
+	public String getUsername() {
+		
+		return usernameField.getText();
 	}
 
 }
