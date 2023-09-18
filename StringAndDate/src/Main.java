@@ -1,18 +1,10 @@
+import java.time.DayOfWeek;
 import java.util.Arrays;
 import java.util.List;
-import java.util.StringJoiner;
 
 public class Main {
     public static void main(String[] args) {
-        StringJoiner joiner = new StringJoiner(",", "[", "]"); //
-        joiner.add("Red").add("Green").add("Blue"); //
-        String joined = joiner.toString(); //
-        System.out.println(joined);
-
-        occurrences("alma almafa alm almafa béka", "alma");
-        System.out.println(isAnagram("élet", "étel"));
-        System.out.println(isAnagram("élet", "kutya"));
-
+        System.out.println(caesarCode("XYZ ALMA223", 200));
 
     }
 
@@ -72,6 +64,18 @@ public class Main {
 
     }
 
+    public static String caesarCode(String message, int offset) {
+
+        char[] chars = message.toUpperCase().toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            if (Character.isLetter(chars[i])) {
+                chars[i] = (char) ((chars[i] - 'A' + offset) % 26 + 'A');
+            }
+        }
+
+        return new String(chars);
+    }
+
 
     private static boolean isAnagram(String s1, String s2) {
 
@@ -80,7 +84,7 @@ public class Main {
 
         Arrays.sort(split);
         Arrays.sort(split_2);
-        return Arrays.equals(split,split_2);
+        return Arrays.equals(split, split_2);
     }
 
     private static void printStrings(String... strings) {
