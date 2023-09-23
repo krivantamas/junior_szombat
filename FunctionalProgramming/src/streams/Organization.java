@@ -1,5 +1,7 @@
 package streams;
 
+import java.util.Objects;
+
 public class Organization {
 
     private String name;
@@ -29,6 +31,19 @@ public class Organization {
 
     public void setCountry(Country country) {
         this.country = country;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Organization that = (Organization) o;
+        return Objects.equals(name, that.name) && Objects.equals(country, that.country);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, country);
     }
 
     @Override

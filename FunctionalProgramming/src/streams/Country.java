@@ -1,5 +1,7 @@
 package streams;
 
+import java.util.Objects;
+
 public class Country {
 
     private String name;
@@ -8,6 +10,19 @@ public class Country {
     public Country(String name, String isoCode) {
         this.name = name;
         this.isoCode = isoCode;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Country country = (Country) o;
+        return Objects.equals(name, country.name) && Objects.equals(isoCode, country.isoCode);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, isoCode);
     }
 
     public String getName() {

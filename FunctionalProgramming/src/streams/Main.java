@@ -9,6 +9,141 @@ import java.util.stream.Stream;
 public class Main {
     public static void main(String... args) {
 
+        List<Employee> employees = Arrays.asList(
+                new Employee(1, "Jeff Bezos", 100000, new Organization("Amazon", new Country("USA", "US"))),
+                new Employee(2, "John Smith", 20000, new Organization("Amazon", new Country("USA", "US"))),
+                new Employee(3, "Bill Gates", 200000, new Organization("Microsoft", new Country("USA", "US"))),
+                new Employee(4, "Paul Allen", 200000, new Organization("Microsoft", new Country("USA", "US"))),
+                new Employee(5, "Mark Zuckerberg", 300000, new Organization("Facebook", new Country("Ireland", "IR"))),
+                new Employee(6, "Bill Bow", 10000, new Organization("Facebook", new Country("Ireland", "IR"))),
+                new Employee(7, "Elon Musk", 300000, new Organization("Twitter", new Country("USA", "US"))),
+                new Employee(8, "Parag Agrawal", 300000, new Organization("Twitter", new Country("USA", "US"))),
+                new Employee(9, "Tim Cook", 250000, new Organization("Apple", new Country("United Kingdom", "UK"))),
+                new Employee(10, "Jony Ive", 50000, new Organization("Apple", new Country("United Kingdom", "UK"))),
+                new Employee(11, "Steve Wozniak", 150000, new Organization("Apple", new Country("United Kingdom", "UK"))));
+
+
+        //1. feladat
+        List<Employee> employees_1 = employees.stream().filter(employee -> employee.getId() % 3 == 1).toList();
+
+        //2. feladat
+
+        Map<String, Double> employees_2 = employees.stream()
+                .collect(Collectors.groupingBy(employee -> employee.getOrganization().getName()))
+                .entrySet()
+                .stream()
+                .collect(Collectors.toMap(stringListEntry -> stringListEntry.getKey(), stringListEntry -> {
+                    List<Employee> employeeList = stringListEntry.getValue();
+
+                    double average = 0;
+                    for (Employee employee : employeeList) {
+                        average += employee.getSalary();
+                    }
+
+                    return average / employeeList.size();
+                }));
+
+        employees_2 = employees.stream()
+                .collect(
+                        Collectors.groupingBy(
+                                employee -> employee.getOrganization().getName(),
+                                Collectors.averagingDouble(Employee::getSalary)));
+
+        //3. feladat
+
+        List<Employee> employees1 = employees.stream().sorted((o1, o2) -> {
+            int compare = Integer.compare(o1.getSalary(), o2.getSalary());
+            if (compare == 0) {
+                return o1.getName().compareTo(o2.getName());
+            }
+            return compare;
+        }).toList();
+
+        //4. feladat
+
+        List<Organization> usOrganizations = employees.stream()
+                .map(Employee::getOrganization)
+                .filter(organization -> organization.getCountry().getIsoCode().equals("US"))
+                .distinct()
+                .toList();
+
+        //5. feladat
+
+        //Map<Organization,List<Employee>> ->
+        //Entry<Organization,List<Employee>>
+        Map<Organization, Long> collect = employees.stream()
+                .collect(Collectors.groupingBy(Employee::getOrganization))
+                .entrySet()
+                .stream()
+                .collect(Collectors.toMap(
+                        organizationListEntry -> organizationListEntry.getKey(),
+                        organizationListEntry -> {
+                            List<Employee> organizationListEntryValue = organizationListEntry.getValue();
+
+                            return (long) organizationListEntryValue.size();
+                        }
+                ));
+
+        Map<Organization, Long> collect_2 = employees.stream()
+                .collect(Collectors.groupingBy(Employee::getOrganization))
+                .entrySet()
+                .stream()
+                .collect(Collectors.toMap(
+                        organizationListEntry -> organizationListEntry.getKey(),
+                        organizationListEntry -> organizationListEntry.getValue().stream().count()
+                ));
+
+        Map<Organization, Long> collect_3 = employees.stream()
+                .collect(Collectors.groupingBy(Employee::getOrganization))
+                .entrySet()
+                .stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        organizationListEntry -> (long) organizationListEntry.getValue().size()
+                ));
+
+        Map<Organization, Long> collect_4 = employees.stream()
+                .collect(Collectors.groupingBy(Employee::getOrganization, Collectors.counting()));
+
+
+        //6. feladat
+
+        Map<Organization, List<Employee>> organizationListMap = employees.stream().collect(Collectors.groupingBy(Employee::getOrganization));
+
+        //7. feladat
+
+        List<Employee> moreThanAverage = employees.stream()
+                .filter(employee -> employee.getSalary() > employees
+                        .stream()
+                        .mapToDouble(Employee::getSalary)
+                        .average()
+                        .getAsDouble())
+                .toList();
+
+        //8. feladat
+        employees.stream()
+                .peek(employee -> System.out.println(employee.getName()))
+                //.peek(employee -> employee.setName(employee.getName().split(" ")[0]))
+                .forEach(employee -> System.out.println(employee.getName()));
+
+
+        // 9. feladat
+        Optional<Employee> max = employees.stream().max(Comparator.comparingInt(emp -> emp.getName().length()));
+
+
+        // 10. feladat
+
+        boolean match = employees
+                .stream()
+                .collect(
+                        Collectors.groupingBy(
+                                Employee::getOrganization,
+                                Collectors.counting()))
+                .entrySet()
+                .stream()
+                .peek(System.out::println)
+                .anyMatch(organizationLongEntry -> organizationLongEntry.getValue() > 3);
+        System.out.println(match);
     }
 
 
@@ -219,7 +354,7 @@ public class Main {
 
     }
 
-    public static void streamGroupingBy(){
+    public static void streamGroupingBy() {
         List<Employee> employees = Arrays.asList(
                 new Employee(1, "Jeff Bezos", 10000),
                 new Employee(2, "Bill Gates", 20000),
@@ -230,7 +365,7 @@ public class Main {
         System.out.println(collect);
     }
 
-    public static void streamGroupingByParameter(){
+    public static void streamGroupingByParameter() {
         List<Employee> employees = Arrays.asList(
                 new Employee(1, "Jeff Bezos", 10000, new Organization("AMAZON")),
                 new Employee(2, "Bill Gates", 20000, new Organization("MICROSOFT")),

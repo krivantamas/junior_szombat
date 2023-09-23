@@ -1,5 +1,7 @@
 package streams;
 
+import java.util.Objects;
+
 public class Employee {
 
     private int id;
@@ -51,6 +53,19 @@ public class Employee {
 
     public void setOrganization(Organization organization) {
         this.organization = organization;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return id == employee.id && salary == employee.salary && Objects.equals(name, employee.name) && Objects.equals(organization, employee.organization);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, salary, organization);
     }
 
     @Override
