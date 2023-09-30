@@ -23,6 +23,9 @@ public class Main {
                 new Employee(11, "Steve Wozniak", 150000, new Organization("Apple", new Country("United Kingdom", "UK"))));
 
 
+        findFirst();
+
+
         //1. feladat
         List<Employee> employees_1 = employees.stream().filter(employee -> employee.getId() % 3 == 1).toList();
 
@@ -374,6 +377,15 @@ public class Main {
 
         Map<String, List<Employee>> collect = employees.stream().collect(Collectors.groupingBy(employee -> employee.getOrganization().getName()));
         System.out.println(collect);
+
+    }
+
+    public static void findFirst() {
+
+        Employee[] employees = new Employee[]{};
+
+
+        Optional<Employee> first = Stream.of(employees).findFirst();
 
 
     }
