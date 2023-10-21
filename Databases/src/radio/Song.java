@@ -1,3 +1,5 @@
+package radio;
+
 public class Song {
 
     private final int songId;
@@ -45,7 +47,7 @@ public class Song {
 
     @Override
     public String toString() {
-        return "Song{" +
+        return "radio.Song{" +
                 "songId=" + songId +
                 ", radio=" + radio +
                 ", timeInSeconds=" + timeInSeconds +
