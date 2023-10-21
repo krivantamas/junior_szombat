@@ -1,14 +1,23 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 public class Main {
     public static void main(String[] args) {
         Database database = new Database();
-        SongDao songDao = new SongDao(database.getConnection());
 
-        //initDatabase(songDao);
-        System.out.println(songDao.getAll());
+        RadioService radioService = new RadioService(database.getConnection());
+
+        IntStream.of(1, 2, 3).forEach(radioId -> {
+                    System.out.println("Radio: " + radioId + " - " + radioService.totalSongLength(radioId) + " sec.");
+                    System.out.println("Radio: " + radioId + " - " + radioService.totalSongCount(radioId) + ".");
+                    System.out.println("Radio: " + radioId + " - " + radioService.longestSong(radioId) + ".");
+                    System.out.println("Radio: " + radioId + " - " + radioService.shortestSong(radioId) + ".");
+                    System.out.println("Radio: " + radioId + " - " + radioService.mostPlayedAuthor(radioId) + ".");
+                    System.out.println("Radio: " + radioId + " - " + radioService.songsByAuthor("Eric Clapton", radioId).size() + ".");
+                }
+        );
 
 
     }
