@@ -9,7 +9,7 @@ public class Main {
     public static void main(String[] args) {
 
         Dao<Book> bookdao = new BookDao(new Database().getConnection());
-        initDatabase(bookdao);
+        //initDatabase(bookdao);
     }
 
     private static void initDatabase(Dao<Book> bookdao) {
