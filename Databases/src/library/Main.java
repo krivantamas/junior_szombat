@@ -8,11 +8,18 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Dao<Book> bookdao = new BookDao(new Database().getConnection());
+        Dao<Book, String> bookdao = new BookDao(new Database().getConnection());
+        System.out.println(bookdao.getAll());
+        System.out.println("====");
+        System.out.println(bookdao.getById("978-0316769544"));
+        System.out.println(bookdao.update(bookdao.getById("978-0316769544").get(), new Book("","The Hobbit Adventure 2","J.R.R. Tolkien","Fantasy",false)));
+        System.out.println("====");
+        bookdao.delete(bookdao.getById("978-0316769544").get());
+        System.out.println(bookdao.getAll());
         //initDatabase(bookdao);
     }
 
-    private static void initDatabase(Dao<Book> bookdao) {
+    private static void initDatabase(Dao<Book, String> bookdao) {
 
         try {
             Scanner scanner = new Scanner(new File("W:\\Webler\\Materials\\Git\\junior_szombat\\Databases\\src\\library\\books.csv"));
