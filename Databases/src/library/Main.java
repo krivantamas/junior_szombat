@@ -8,10 +8,11 @@ public class Main {
 
     public static void main(String[] args) {
 
-        initDatabase();
+        Dao<Book> bookdao = new BookDao(new Database().getConnection());
+        initDatabase(bookdao);
     }
 
-    private static void initDatabase() {
+    private static void initDatabase(Dao<Book> bookdao) {
 
         try {
             Scanner scanner = new Scanner(new File("W:\\Webler\\Materials\\Git\\junior_szombat\\Databases\\src\\library\\books.csv"));
@@ -25,7 +26,7 @@ public class Main {
                 String genre = values[3];
                 boolean available = values[4].equalsIgnoreCase("yes");
 
-                System.out.println(new Book(isbn, title, author, genre, available));
+                bookdao.save(new Book(isbn, title, author, genre, available));
 
 
             }
