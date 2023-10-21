@@ -110,20 +110,70 @@ public class BookDao implements Dao<Book, String> {
     }
 
     public List<String> getAllAuthor() {
-        return null;
+        String sql = "SELECT DISTINCT author FROM book";
+        List<String> authors = new ArrayList<>();
+
+        try {
+            ResultSet resultSet = connection.createStatement().executeQuery(sql);
+            while (resultSet.next()) {
+                authors.add(resultSet.getString(1));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return authors;
     }
 
-    public List<Book> booksByAuthor() {
-        return null;
+    public List<Book> booksByAuthor(String author) {
+        String sql = "SELECT * FROM book WHERE author = ?";
+        List<Book> books = new ArrayList<>();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, author);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                books.add(mapResultSetToBook(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return books;
     }
 
     public List<Book> availableBooks() {
-        return null;
+        String sql = "SELECT * FROM book WHERE available = True";
+        List<Book> books = new ArrayList<>();
+
+        try {
+            ResultSet resultSet = connection.createStatement().executeQuery(sql);
+            while (resultSet.next()) {
+                books.add(mapResultSetToBook(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return books;
     }
 
-    public List<String> getAllAuthorMoreThanOneBook(){
-        //TODO
-        return null;
+    public List<String> getAllAuthorMoreThanOneBook() {
+
+        String sql = "SELECT author FROM book GROUP BY author HAVING COUNT(*) > 1";
+        List<String> authors = new ArrayList<>();
+
+        try {
+            ResultSet resultSet = connection.createStatement().executeQuery(sql);
+            while (resultSet.next()) {
+                authors.add(resultSet.getString(1));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return authors;
     }
 
 
