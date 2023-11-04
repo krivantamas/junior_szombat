@@ -15,9 +15,10 @@ public class Main {
 
         Connection connection = new Database().getConnection();
 
-        InitDatabaseService initDatabaseService = new InitDatabaseService(
-                new CovidStatDao(connection),
-                new CountryDao(connection));
+        CovidStatDao covidStatDao = new CovidStatDao(connection);
+        CountryDao countryDao = new CountryDao(connection);
+
+        InitDatabaseService initDatabaseService = new InitDatabaseService(covidStatDao, countryDao);
 
         initDatabaseService.initDatabase(countries, stats);
 
