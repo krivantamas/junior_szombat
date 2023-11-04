@@ -9,7 +9,8 @@ public class CovidStat {
     private final LocalDate date;
     private final int cases;
     private final int deaths;
-    private final int countryId;
+    private int countryId;
+    private String countryName;
 
     public CovidStat(LocalDate date, int cases, int deaths, int countryId) {
         this.id = -1;
@@ -26,6 +27,15 @@ public class CovidStat {
         this.deaths = deaths;
         this.countryId = countryId;
     }
+    public CovidStat( LocalDate date, int cases, int deaths, String countryName) {
+        this.id = -1;
+        this.date = date;
+        this.cases = cases;
+        this.deaths = deaths;
+        this.countryId = -1;
+        this.countryName = countryName;
+    }
+
 
     public int getId() {
         return id;
@@ -49,6 +59,14 @@ public class CovidStat {
 
     public int getCountryId() {
         return countryId;
+    }
+
+    public void setCountryId(int countryId) {
+        this.countryId = countryId;
+    }
+
+    public String getCountryName() {
+        return countryName;
     }
 
     @Override
