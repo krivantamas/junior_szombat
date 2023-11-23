@@ -24,10 +24,13 @@ public class InitDatabaseService {
     }
 
 
-    //TODO HÁZI, oldd meg, hogy csak akkor mentse el, ha új ország
     private void saveCountries(Set<Country> countrySet) {
+
+        List<String> countryNames = countryDao.getAll().stream().map(Country::getName).toList();
         for (Country country : countrySet) {
-            countryDao.save(country);
+            if (!countryNames.contains(country.getName())) {
+                countryDao.save(country);
+            }
         }
     }
 
@@ -35,7 +38,7 @@ public class InitDatabaseService {
         for (CovidStat covidStat : covidStatList) {
             Optional<Country> countryName = countryDao.getByCountryName(
                     covidStat.getCountryName());
-            if(countryName.isPresent()){
+            if (countryName.isPresent()) {
                 covidStat.setCountryId(countryName.get().getId());
                 covidStatDao.save(covidStat);
             }

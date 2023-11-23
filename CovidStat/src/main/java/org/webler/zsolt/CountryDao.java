@@ -52,16 +52,7 @@ public class CountryDao implements Dao<Country> {
         return countries;
     }
 
-    private Country mapResultSetToCountry(ResultSet resultSet) throws SQLException {
 
-        int countryId = resultSet.getInt("country_id");
-        String countryName = resultSet.getString("country_name");
-        int population = resultSet.getInt("population");
-        String continent = resultSet.getString("continent");
-
-
-        return new Country(countryId, countryName, population, continent);
-    }
 
     @Override
     public Optional<Country> getById(int id) {
@@ -86,7 +77,6 @@ public class CountryDao implements Dao<Country> {
     public Optional<Country> getByCountryName(String name) {
         String sql = "SELECT * FROM country WHERE country_name = ?";
 
-
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, name);
@@ -99,6 +89,34 @@ public class CountryDao implements Dao<Country> {
         }
 
         return Optional.empty();
+    }
+
+
+    public List<String> getContinents(){
+        String sql = "SELECT DISTINCT continent FROM country";
+        List<String> continents = new ArrayList<>();
+
+        try {
+            ResultSet resultSet = connection.createStatement().executeQuery(sql);
+            while (resultSet.next()) {
+                continents.add(resultSet.getString(1));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return continents;
+    }
+
+    private Country mapResultSetToCountry(ResultSet resultSet) throws SQLException {
+
+        int countryId = resultSet.getInt("country_id");
+        String countryName = resultSet.getString("country_name");
+        int population = resultSet.getInt("population");
+        String continent = resultSet.getString("continent");
+
+
+        return new Country(countryId, countryName, population, continent);
     }
 
 }
