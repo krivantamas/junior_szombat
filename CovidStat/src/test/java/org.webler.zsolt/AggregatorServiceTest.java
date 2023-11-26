@@ -2,6 +2,7 @@ package org.webler.zsolt;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.time.LocalDate;
@@ -57,6 +58,41 @@ public class AggregatorServiceTest {
         Map<String, List<CovidStat>> actualMap = aggregatorService.covidStatsByContinents();
 
         Assertions.assertEquals(expectedMap, actualMap);
+
+    }
+
+    @Test
+    public void mostDeadlyCountryNormalizedWithPopulationTest(){
+
+        Country expectedCountry = new Country("Germany", 0, "Europe");
+
+        CountryDao countryDaoMock = Mockito.mock(CountryDao.class);
+        CovidStatDao covidStatDaoMock = Mockito.mock(CovidStatDao.class);
+        AggregatorService aggregatorService = new AggregatorService(covidStatDaoMock, countryDaoMock);
+
+        Mockito.when(covidStatDaoMock.getMostDeadlyCountryIdNormalizedByPopulation()).thenReturn(1);
+        Mockito.when(countryDaoMock.getById(1)).thenReturn(Optional.of(expectedCountry));
+
+        Optional<Country> country = aggregatorService.mostDeadlyCountryNormalizedWithPopulation();
+
+        Assertions.assertEquals(expectedCountry, country.get());
+        Mockito.verify(countryDaoMock).getById(1);
+
+    }
+    @Test
+    void getCovidStatBetweenTest(LocalDate from, LocalDate to){
+
+        List<CovidStat> expectedList = List.of(new CovidStat(1, LocalDate.of(2020, 11, 20), 10, 2, 1));
+
+
+        CountryDao countryDaoMock = Mockito.mock(CountryDao.class);
+        CovidStatDao covidStatDaoMock = Mockito.mock(CovidStatDao.class);
+        AggregatorService aggregatorService = new AggregatorService(covidStatDaoMock, countryDaoMock);
+
+        Mockito.when(covidStatDaoMock.getCovidStatsBetween(from, to)).thenReturn(expectedList);
+        List<CovidStat> actualList = aggregatorService.getCovidStatBetween(from, to);
+
+        Assertions.assertEquals(expectedList, actualList);
 
     }
 
