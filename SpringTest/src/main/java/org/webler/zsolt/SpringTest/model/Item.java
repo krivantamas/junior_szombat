@@ -1,30 +1,27 @@
 package org.webler.zsolt.SpringTest.model;
 
+
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @NoArgsConstructor
 @Data
-@Table(name = "_user")
-public class User {
+public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
     private String name;
-    private int age;
-    private String email;
+    private int price;
 
-    @OneToMany(mappedBy = "user")
-    private List<Item> items = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    public User(String name, int age) {
+    public Item(String name, int price) {
         this.name = name;
-        this.age = age;
+        this.price = price;
     }
 }
