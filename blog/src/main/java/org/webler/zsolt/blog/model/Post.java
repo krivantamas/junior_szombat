@@ -44,7 +44,7 @@ public class Post {
     @JoinColumn(name = "author_id")
     private User author;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "post", cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
     @Setter(AccessLevel.NONE)
     private final List<Comment> comments = new java.util.ArrayList<>();
 

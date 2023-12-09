@@ -41,7 +41,7 @@ public class User {
     @Setter(AccessLevel.NONE)
     private final List<Comment> comments = new java.util.ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @Setter(AccessLevel.NONE)
     private final List<Role> roles = new java.util.ArrayList<>();
 
