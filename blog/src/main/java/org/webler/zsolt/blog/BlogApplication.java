@@ -64,7 +64,7 @@ public class BlogApplication {
                 user.getPosts().get(0).addComment(comment);
             }
 
-            user.addRole(Role.builder().role("ADMIN").build());
+            //user.addRole(Role.builder().role("ADMIN").build());
             user.addRole(Role.builder().role("USER").build());
 
 

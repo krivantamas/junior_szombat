@@ -31,7 +31,7 @@ public class SecurityConfig {
 
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder(){
+    public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -77,10 +77,17 @@ public class SecurityConfig {
 
         httpSecurity.authorizeHttpRequests(configurer ->
                 configurer
-                        .requestMatchers(HttpMethod.GET, "/users").hasAuthority("USER")
                         .requestMatchers(HttpMethod.POST, "/posts").hasAuthority("USER")
-                        .requestMatchers(HttpMethod.GET, "/users/**").hasAuthority("ADMIN")
-                        .anyRequest().permitAll()
+                        .requestMatchers(HttpMethod.GET, "/posts").hasAuthority("USER")
+                        .requestMatchers(HttpMethod.DELETE, "/posts").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/posts/*/comments").hasAuthority("USER")
+                        .requestMatchers(HttpMethod.GET, "/posts/*/comments").hasAuthority("USER")
+                        .requestMatchers(HttpMethod.PATCH, "/posts/*/comments/**").hasAuthority("USER")
+                        .requestMatchers(HttpMethod.PATCH, "/posts/*").hasAuthority("USER")
+                        .requestMatchers(HttpMethod.DELETE, "/posts/*").hasAuthority("USER")
+                        .requestMatchers(HttpMethod.DELETE, "/users/*").hasAuthority("USER")
+                        .requestMatchers(HttpMethod.POST, "/sign-up").permitAll()
+                        .anyRequest().hasAuthority("ADMIN")
         );
 
         httpSecurity.httpBasic(Customizer.withDefaults());
