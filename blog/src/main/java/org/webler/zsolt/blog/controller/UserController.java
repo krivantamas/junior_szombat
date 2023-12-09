@@ -8,6 +8,7 @@ import org.webler.zsolt.blog.model.Post;
 import org.webler.zsolt.blog.model.User;
 import org.webler.zsolt.blog.repository.UserRepository;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -40,7 +41,10 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getAllUsers() {
+    public List<User> getAllUsers(Principal principal) {
+
+
+
         return userRepository.findAll();
     }
 
