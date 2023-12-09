@@ -20,8 +20,8 @@ public class BlogApplication {
         SpringApplication.run(BlogApplication.class, args);
     }
 
-    @Bean
-    @Autowired
+    //@Bean
+    //@Autowired
     InitializingBean initDatabase(UserRepository userRepository, PostRepository postRepository, CategoryRepository categoryRepository) {
 
         return () -> {

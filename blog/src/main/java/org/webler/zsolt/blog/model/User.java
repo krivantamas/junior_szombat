@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Table(name = "_user")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,7 +23,7 @@ public class User {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    @Size(min=3)
+    @Size(min = 3)
     private String username;
 
     @Column(nullable = false, unique = true)
@@ -41,17 +41,27 @@ public class User {
     @Setter(AccessLevel.NONE)
     private final List<Comment> comments = new java.util.ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+    @Setter(AccessLevel.NONE)
+    private final List<Role> roles = new java.util.ArrayList<>();
 
-    public Post addPost(Post post){
+
+    public Post addPost(Post post) {
         posts.add(post);
         post.setAuthor(this);
         return post;
     }
 
-    public Comment addComment(Comment comment){
+    public Comment addComment(Comment comment) {
         comments.add(comment);
         comment.setAuthor(this);
         return comment;
+    }
+
+    public Role addRole(Role role) {
+        roles.add(role);
+        role.setUser(this);
+        return role;
     }
 
 }
