@@ -20,15 +20,15 @@ public class BlogApplication {
         SpringApplication.run(BlogApplication.class, args);
     }
 
-    //@Bean
-    //@Autowired
+    @Bean
+    @Autowired
     InitializingBean initDatabase(UserRepository userRepository, PostRepository postRepository, CategoryRepository categoryRepository) {
 
         return () -> {
             System.out.println("FUT");
             User user = new User().builder()
                     .username("TesztUser")
-                    .password("1234")
+                    .password("$2a$12$vhMulnrgsTpbcFFoTfkdi.ITKcIqbPWCatNGwqCDRkBDuec/qeDye")
                     .email("test@test.com")
                     .build();
 
@@ -64,13 +64,16 @@ public class BlogApplication {
                 user.getPosts().get(0).addComment(comment);
             }
 
+            //user.addRole(Role.builder().role("ADMIN").build());
+            user.addRole(Role.builder().role("USER").build());
+
+
             userRepository.saveAndFlush(user);
 
 
             Post p = postRepository.findById(1L).get();
 
             p.setContent("valami más");
-
 
 
             Category test = new Category().builder().categoryName("test").build();

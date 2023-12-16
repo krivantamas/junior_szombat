@@ -33,15 +33,15 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @OneToMany(mappedBy = "author", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "author", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @Setter(AccessLevel.NONE)
     private final List<Post> posts = new java.util.ArrayList<>();
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "author", cascade = {CascadeType.PERSIST, CascadeType.DETACH})
     @Setter(AccessLevel.NONE)
     private final List<Comment> comments = new java.util.ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.EAGER)
     @Setter(AccessLevel.NONE)
     private final List<Role> roles = new java.util.ArrayList<>();
 
@@ -64,4 +64,9 @@ public class User {
         return role;
     }
 
+    @PreRemove
+    public void preRemove() {
+        comments.forEach(comment -> comment.setAuthor(null));
+        posts.forEach(post -> post.setAuthor(null));
+    }
 }
