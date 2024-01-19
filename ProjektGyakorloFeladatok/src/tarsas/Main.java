@@ -82,6 +82,7 @@ public class Main {
 
         writer.close();
 
+        //
 
         int[] players = new int[playerCount];
         int throwIndex = 0;
@@ -148,10 +149,25 @@ public class Main {
         IntStream.range(0, players.length).filter(p -> finalPlayers[p] >= selectedRoute.length()).forEach(p -> {
             System.out.print((p + 1) + " ");
         });
+
+        for (int i = 0; i < finalPlayers.length; i++) {
+            if (finalPlayers[i] >= selectedRoute.length()) {
+                System.out.print(i + 1 + " ");
+            }
+        }
+
         System.out.println();
         IntStream.range(0, players.length).filter(p -> finalPlayers[p] < selectedRoute.length()).forEach(p -> {
             System.out.println((p + 1) + ". játékos, " + finalPlayers[p] + ". mező");
         });
+        for (int i = 0; i < finalPlayers.length; i++) {
+            if (finalPlayers[i] < selectedRoute.length()) {
+                System.out.println((i + 1) + ". játékos, " + finalPlayers[i] + ". mező");
+            }
+        }
+
+        int[] ints = IntStream.range(0, players.length).toArray();
+        System.out.println();
 
 
     }
